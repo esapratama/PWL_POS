@@ -48,6 +48,26 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-1 control-label col-form-label">Telepon</label>
+                        <div class="col-11">
+                            <input type="text" class="form-control" id="supplier_telepon" name="supplier_telepon"
+                                value="{{ old('supplier_telepon', $supplier->supplier_telepon) }}" required>
+                            @error('supplier_telepon')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-1 control-label col-form-label">Email</label>
+                        <div class="col-11">
+                            <input type="text" class="form-control" id="supplier_email" name="supplier_email"
+                                value="{{ old('supplier_email', $supplier->supplier_email) }}" required>
+                            @error('supplier_email')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-1 control-label col-form-label"></label>
                         <div class="col-11">
                             <button type="submit" class="btn btn-primary btn=sm">Simpan</button>
@@ -62,4 +82,4 @@
 @push('css')
 @endpush
 @push('js')
-@endpush
+@endpush*

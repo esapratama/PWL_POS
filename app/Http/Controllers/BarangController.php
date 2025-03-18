@@ -27,27 +27,28 @@
          return view('barang.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu, 'kategori' => $kategori]);
      }
  
-    public function list(Request $request)
-{
-    $barang = BarangModel::with('kategori')->select('barang_id', 'nama_barang', 'harga', 'stok', 'kategori_id');
-
-    if ($request->kategori_id) {
-        $barang->where('kategori_id', $request->kategori_id);
-    }
-
-    return DataTables::of($barang)
-        ->addIndexColumn() // Menambahkan kolom index otomatis
-        ->addColumn('kategori_nama', function ($row) {
-            return $row->kategori->nama_kategori ?? '-';
-        })
-        ->addColumn('aksi', function ($row) {
-            return '<a href="'.url('barang/edit/'.$row->barang_id).'" class="btn btn-sm btn-warning">Edit</a>
-                    <a href="'.url('barang/delete/'.$row->barang_id).'" class="btn btn-sm btn-danger">Hapus</a>';
-        })
-        ->rawColumns(['aksi']) // Biarkan HTML untuk tombol aksi
-        ->make(true);
-}
-
+     public function list(Request $request)
+     {
+         $barang = BarangModel::select('barang_id', 'barang_kode', 'barang_nama', 'kategori_id', 'harga_beli', 'harga_jual')->with('kategori');
+ 
+         if ($request->kategori_id) {
+             $barang->where('kategori_id', $request->kategori_id);
+         }
+ 
+         return DataTables::of($barang)
+             ->addIndexColumn()
+             ->addColumn('aksi', function ($barang) {
+                 $btn = '<a href="' . url('/barang/' . $barang->barang_id) . '" class="btn btn-info btn-sm">Detail</a> ';
+                 $btn .= '<a href="' . url('/barang/' . $barang->barang_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
+                 $btn .= '<form class="d-inline-block" method="POST" action="' . url('/barang/' . $barang->barang_id) . '">'
+                     . csrf_field() . method_field('DELETE') .
+                     '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
+                 return $btn;
+             })
+             ->rawColumns(['aksi'])
+             ->make(true);
+     }
+ 
      public function create()
      {
          $breadcrumb = (object) [
@@ -67,19 +68,25 @@
      }
  
      public function store(Request $request)
-     {
-         $request->validate([
-             'kategori_id' => 'required',
-             'barang_id' => 'required',
-             'nama_barang' => 'required',
-             'harga' => 'required',
-             'stok' => 'required',
-         ]);
- 
-         BarangModel::create($request->all());
- 
-         return redirect('/barang')->with('success', 'Data berhasil ditambahkan');
-     }
+    {
+        $request->validate([
+            'kategori_id'  => 'required|integer|exists:m_kategori,kategori_id',
+            'barang_kode'  => 'required|string|max:10|unique:m_barang,barang_kode',
+            'barang_nama'  => 'required|string|max:100',
+            'harga_beli'   => 'required|integer|min:0',
+            'harga_jual'   => 'required|integer|min:0',
+        ]);
+
+        BarangModel::create([
+            'kategori_id' => $request->kategori_id,
+            'barang_kode' => $request->barang_kode,
+            'barang_nama' => $request->barang_nama,
+            'harga_beli'  => $request->harga_beli,
+            'harga_jual'  => $request->harga_jual,
+        ]);
+
+        return redirect('/barang')->with('success', 'Data barang berhasil disimpan!');
+    }
  
      public function show($id)
      {
@@ -122,10 +129,10 @@
      {
          $request->validate([
              'kategori_id' => 'required',
-             'barang_id' => 'required|unique:m_barang,barang_kode,' . $id . ',barang_id',
-             'nama_barang' => 'required',
-             'harga' => 'required',
-             'stok' => 'required',
+             'barang_kode' => 'required|unique:m_barang,barang_kode,' . $id . ',barang_id',
+             'barang_nama' => 'required',
+             'harga_beli' => 'required',
+             'harga_jual' => 'required',
          ]);
  
          BarangModel::find($id)->update($request->all());

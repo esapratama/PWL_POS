@@ -26,10 +26,10 @@
  
      public function list(Request $request)
      {
-         $supplier = SupplierModel::select('id', 'nama', 'alamat', 'telp', 'email', 'status');
+         $supplier = SupplierModel::select('supplier_id', 'supplier_kode', 'supplier_nama', 'supplier_alamat', 'supplier_telepon', 'supplier_email');
  
          if ($request->supplier_nama) {
-             $supplier->where('nama', 'like', '%' . $request->nama . '%');
+             $supplier->where('supplier_nama', 'like', '%' . $request->supplier_nama . '%');
          }
  
          return DataTables::of($supplier)
@@ -65,12 +65,11 @@
      public function store(Request $request)
      {
          $request->validate([
-             'id' => 'required',
-             'nama' => 'required',
-             'alamat' => 'required',
-             'telp' => 'required',
-             'email' => 'required',
-             'status' => 'required',
+             'supplier_kode' => 'required',
+             'supplier_nama' => 'required',
+             'supplier_alamat' => 'required',
+             'supplier_telepon' => 'required',
+             'supplier_email'=> 'required' 
          ]);
  
          SupplierModel::create($request->all());
@@ -117,12 +116,11 @@
      public function update(Request $request, $id)
      {
          $request->validate([
-             'id' => 'required|unique:m_supplier',
-             'nama' => 'required',
-             'alamat' => 'required',
-             'telp' => 'required',
-             'email' => 'required',
-             'status' => 'required',
+             'supplier_kode' => 'required|unique:m_supplier',
+             'supplier_nama' => 'required',
+             'supplier_alamat' => 'required',
+             'supplier_telepon' => 'required',
+             'supplier_email'=> 'required'      
          ]);
  
          SupplierModel::find($id)->update($request->all());

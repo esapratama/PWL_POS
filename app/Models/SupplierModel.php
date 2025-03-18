@@ -6,16 +6,15 @@
  use Illuminate\Database\Eloquent\Model;
  
  class SupplierModel extends Model
-{
-    use HasFactory;
-    protected $table = 'm_supplier';
-    protected $primaryKey = 'supplier_id';
-    protected $fillable = [
-        'supplier_id', // tambahkan ini jika memang ada di database
-        'nama',
-        'alamat',
-        'telp',
-        'email',
-        'status',
+ {
+     use HasFactory;
+     protected $table = 'm_supplier';
+     protected $primaryKey = 'supplier_id';
+     protected $fillable = [
+         'supplier_kode',
+         'supplier_nama',
+         'supplier_alamat',
+         'supplier_telepon',
+         'supplier_email'
     ];
 }

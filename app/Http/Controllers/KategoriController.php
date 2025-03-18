@@ -2,15 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KategoriModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\KategoriModel;
+use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\Facades\DataTables;
 
 class KategoriController extends Controller
 {
-    public function index()
-    {
+    public function index(){
+        /*$data = [
+            'kategori_kode' => 'SNK',
+            'kategori_nama' => 'Snack/Makanan ringan',
+            'created_at' => now()
+        ];
+        DB::table('m_kategori')->insert($data);
+        return 'Insert data baru berhasil';
+
+       
+       // $row = DB::table('m_kategori')->where('kategori_kode', 'SNK')->update(['kategori_nama' => 'Camilan']);
+        //return 'Update data berhasil. Jumlah data yang diupdate: ' . $row.' baris';
+
+       // $row = DB::table('m_kategori')->where('kategori_kode', 'SNK')->delete();
+        //return 'Delete data berhasil. Jumlah data yang dihapus: ' . $row.' baris';
+
+        $data = DB::table('m_kategori')->get();
+        return view('kategori', ['data' => $data]);*/
+
+       
         $breadcrumb = (object) [
             'title' => 'Daftar Kategori',
             'list' => ['Home', 'Kategori']
@@ -27,10 +46,10 @@ class KategoriController extends Controller
 
     public function list(Request $request)
     {
-        $kategori = KategoriModel::select('kategori_id', 'nama_kategori');
+        $kategori = KategoriModel::select('kategori_id', 'kategori_kode', 'kategori_nama');
 
         if ($request->kategori_nama) {
-            $kategori->where('nama_kategori', 'like', '%' . $request->kategori_nama . '%');
+            $kategori->where('kategori_nama', 'like', '%' . $request->kategori_nama . '%');
         }
 
         return DataTables::of($kategori)
@@ -65,8 +84,8 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kategori_id' => 'required|unique:m_kategori',
-            'nama_kategori' => 'required'
+            'kategori_kode' => 'required|unique:m_kategori',
+            'kategori_nama' => 'required'
         ]);
 
         KategoriModel::create($request->all());
@@ -95,8 +114,8 @@ class KategoriController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'kategori_id' => 'required|unique:m_kategori,kategori_id,' . $id . ',kategori_id',
-            'nama_kategori' => 'required'
+            'kategori_kode' => 'required|unique:m_kategori,kategori_kode,' . $id . ',kategori_id',
+            'kategori_nama' => 'required'
         ]);
 
         KategoriModel::findOrFail($id)->update($request->all());

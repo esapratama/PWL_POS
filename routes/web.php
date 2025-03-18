@@ -99,10 +99,3 @@ Route::group(['prefix' => 'barang'], function () {
     Route::delete('/{id}', [BarangController::class, 'destroy']); // Menghapus data level
 });
 
-Route::get('/supplier/list', [SupplierController::class, 'list']);
-
-Route::get('/barang', [BarangController::class, 'index']);
-Route::post('/barang/list', [BarangController::class, 'list']);
-Route::get('/barang/create', [BarangController::class, 'create']);
-Route::post('/barang/store', [BarangController::class, 'store']);
-

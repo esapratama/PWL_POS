@@ -50,13 +50,13 @@
                         searchable: false
                     },
                     {
-                        data: "kategori_id",
+                        data: "kategori_kode",
                         className: "",
                         orderable: true,
                         searchable: true
                     },
                     {
-                        data: "nama_kategori",
+                        data: "kategori_nama",
                         className: "",
                         orderable: true,
                         searchable: true
