@@ -89,13 +89,15 @@ Route::group(['prefix' => 'supplier'], function () {
 });
 
 Route::group(['prefix' => 'barang'], function () {
-    Route::get('/', [BarangController::class, 'index']); // Menampilkan halaman awal Barang
-    Route::post('/list', [BarangController::class, 'list']); // Menampilkan data[Barang dalam bentuk JSON untuk DataTables
-    Route::get('/create', [BarangController::class, 'create']); // Menampilkan halaman form tambah[Barang
-    Route::post('/', [BarangController::class, 'store']); // Menyimpan data[Barang baru
-    Route::get('/{id}', [BarangController::class, 'show']); // Menampilkan detail[Barang
-    Route::get('/{id}/edit', [BarangController::class, 'edit']); // Menampilkan halaman form edit[Barang
-    Route::put('/{id}', [BarangController::class, 'update']); // Menyimpan perubahan data[Barang
-    Route::delete('/{id}', [BarangController::class, 'destroy']); // Menghapus data level
+    Route::get('/', [UserController::class, 'index']); // Menampilkan halaman awal Barang
+    Route::post('/list', [UserController::class, 'list']); // Menampilkan data[Barang dalam bentuk JSON untuk DataTables
+    Route::get('/create', [UserController::class, 'create']); // Menampilkan halaman form tambah[Barang
+    Route::post('/', [UserController::class, 'store']); // Menyimpan data[Barang baru
+    Route::get('/create_ajax', [UserController::class,'create_ajax']); // Menampilkan halaman form tambah user ajax
+    ROute::post('/ajax', [UserController::class,'store_ajax']); // Menyimpan data user baru ajax
+    Route::get('/{id}', [UserController::class, 'show']); // Menampilkan detail[Barang
+    Route::get('/{id}/edit', [UserController::class, 'edit']); // Menampilkan halaman form edit[Barang
+    Route::put('/{id}', [UserController::class, 'update']); // Menyimpan perubahan data[Barang
+    Route::delete('/{id}', [UserController::class, 'destroy']); // Menghapus data level
 });
 
