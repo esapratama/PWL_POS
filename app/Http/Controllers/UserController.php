@@ -35,28 +35,31 @@ class UserController extends Controller
      * Mengambil data user dalam bentuk JSON untuk DataTables.
      */
     public function list(Request $request)
-    {
-        $users = UserModel::select('user_id', 'username', 'nama', 'level_id')
-            ->with('level');
-            
-         if ($request->has('level_id') && !empty($request->level_id)) {
-            $users->where('level_id', $request->level_id);
-        }
-        return DataTables::of($users)
-            ->addIndexColumn() // Menambahkan kolom index (DT_RowIndex)
-            ->addColumn('aksi', function ($user) { // Menambahkan kolom aksi
-                $btn = '<a href="' . url('/user/' . $user->user_id) . '" class="btn btn-info btn-sm">Detail</a> ';
-                $btn .= '<a href="' . url('/user/' . $user->user_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<form class="d-inline-block" method="POST" action="' . url('/user/' . $user->user_id) . '">';
-                $btn .= csrf_field();
-                $btn .= method_field('DELETE');
-                $btn .= '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button>';
-                $btn .= '</form>';
-                return $btn;
-            })
-            ->rawColumns(['aksi']) // Memberitahu DataTables bahwa kolom aksi mengandung HTML
-            ->make(true);
+{
+    $users = UserModel::select('user_id', 'username', 'nama', 'level_id')
+        ->with('level');
+    
+    // Filter data user berdasarkan level_id
+    if ($request->level_id) {
+        $users->where('level_id', $request->level_id);
     }
+
+    return DataTables::of($users)
+        ->addIndexColumn() // menambahkan kolom index / no urut (default nama kolom: DT_RowIndex)
+        ->addColumn('aksi', function ($user) { // menambahkan kolom aksi
+            /* $btn = '<a href="'.url('/user/' . $user->user_id).'" class="btn btn-info btn-sm">Detail</a> ';
+            $btn .= '<a href="'.url('/user/' . $user->user_id . '/edit').'" class="btn btn-warning btn-sm">Edit</a> ';
+            $btn .= '<form class="d-inline-block" method="POST" action="'. url('/user/'.$user->user_id).'">'
+                . csrf_field() . method_field('DELETE') .
+                '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>'; */
+            $btn = '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
+            $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> ';
+            $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/delete_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button> ';
+            return $btn;
+        })
+        ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi adalah html
+        ->make(true);
+}
      public function create()
     {
         $breadcrumb = (object) [
@@ -217,4 +220,34 @@ class UserController extends Controller
         return redirect('/');
     }
 
+    // public function confirm_ajax(string $id) {
+    //     $user = UserModel::find($id);
+    //     return view('user.confirm_ajax', ['user' => $user]);
+    // }
+
+    // public function delete_ajax(Request $request, string $id) {
+    //     // cek apakah request dari ajax
+    //     if ($request->ajax() || $request->wantsJson()) {
+    //         $user = UserModel::find($id);
+    //         if ($user) {
+    //             $user->delete();
+    //             return response()->json([
+    //                 'status' => true,
+    //                 'message' => 'Data berhasil dihapus'
+    //             ]);
+    //         } else {
+    //             return response()->json([
+    //                 'status' => false,
+    //                 'message' => 'Data tidak ditemukan'
+    //             ]);
+    //         }
+    //     }
+    //     return redirect('/');
+    // }
+
+    // public function show_ajax(string $id)
+    // {
+    //     $user = UserModel::with('level')->find($id);
+    //     return view('user.show_ajax', ['user' => $user]);
+    // }
 }
