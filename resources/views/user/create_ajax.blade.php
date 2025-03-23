@@ -23,15 +23,16 @@
                     <input value="" type="text" name="username" id="username" class="form-control" required>
                     <small id="error-username" class="error-text form-text text-danger"></small>
                 </div>
+
                 <div class="form-group">
                     <label>Nama</label>
                     <input value="" type="text" name="nama" id="nama" class="form-control" required>
                     <small id="error-nama" class="error-text form-text text-danger"></small>
                 </div>
+
                 <div class="form-group">
                     <label>Password</label>
-                    <input value="" type="password" name="password" id="password" class="form
-                control" required>
+                    <input value="" type="password" name="password" id="password" class="form-control" required>
                     <small id="error-password" class="error-text form-text text-danger"></small>
                 </div>
             </div>
@@ -42,6 +43,7 @@
         </div>
     </div>
 </form>
+
 <script>
     $(document).ready(function () {
         $("#form-tambah").validate({
@@ -85,6 +87,7 @@
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
+
             highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
@@ -92,5 +95,5 @@
                 $(element).removeClass('is-invalid');
             }
         });
-    }); 
+    });
 </script>
