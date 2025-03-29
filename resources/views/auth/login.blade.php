@@ -1,25 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Login Pengguna</title>
-
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
-
     <!-- icheck bootstrap -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
-
     <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="{{ asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap4.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
 </head>
@@ -65,12 +59,14 @@
                         <!-- /.col -->
                     </div>
                 </form>
+                <p class="mt-3">Belum punya akun? <a href="{{ url('/register') }}">Daftar disini</a></p>
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
     </div>
     <!-- /.login-box -->
+    <!-- jQuery -->
     <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -78,10 +74,10 @@
     <script src="{{ asset('adminlte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('adminlte/plugins/jquery-validation/additional-methods.min.js') }}"></script>
     <!-- SweetAlert2 -->
-    <script src="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap4.min.css') }}">
     <!-- AdminLTE App -->
     <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $.ajaxSetup({
             headers: {
@@ -92,7 +88,7 @@
             $("#form-login").validate({
                 rules: {
                     username: { required: true, minlength: 4, maxlength: 20 },
-                    password: { required: true, minlength: 6, maxlength: 20 }
+                    password: { required: true, minlength: 4, maxlength: 20 }
                 },
                 submitHandler: function (form) { // ketika valid, maka bagian yg akan dijalankan
                     $.ajax({
@@ -135,6 +131,59 @@
                     $(element).removeClass('is-invalid');
                 }
             });
+        });
+
+        $("#form-tambah").validate({
+            rules: {
+                level_id: { required: true, number: true },
+                username: { required: true, minlength: 3, maxlength: 20 },
+                nama: { required: true, minlength: 3, maxlength: 100 },
+                password: { required: true, minlength: 4, maxlength: 20 }
+            },
+            submitHandler: function (form) {
+                let $btnSubmit = $(form).find('button[type="submit"]');
+                $btnSubmit.prop('disabled', true).text('Processing...');
+
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status) {
+                            $('#modal-crud').modal('hide');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Registrasi Berhasil',
+                                text: response.message
+                            }).then(() => {
+                                window.location.href = "{{ url('login') }}";
+                            });
+                        } else {
+                            $('.error-text').text('');
+                            $.each(response.msgField, function (prefix, val) {
+                                $('#error-' + prefix).text(val[0]);
+                            });
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Registrasi Gagal',
+                                text: response.message
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Kesalahan Server',
+                            text: 'Terjadi kesalahan saat menghubungi server. Coba lagi nanti.',
+                        });
+                    },
+                    complete: function () {
+                        $btnSubmit.prop('disabled', false).text('Simpan');
+                    }
+                });
+                return false;
+            }
         });
     </script>
 </body>
