@@ -48,8 +48,8 @@ class AuthController extends Controller
         return redirect('login');
     }
 
-    //  public function register(Request $request) {
-    //     User::create($request->all());
-    //     return response()->json(['status' => true, 'message' => 'Registrasi Berhasil!', 'redirect' => url('/dashboard')]);
-    // }
+     public function register(Request $request) {
+        User::create($request->all());
+        return response()->json(['status' => true, 'message' => 'Registrasi Berhasil!', 'redirect' => url('/dashboard')]);
+    }
 }

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
 </head>
 
-<!-- <body class="hold-transition register-page">
+<body class="hold-transition register-page">
     <div class="register-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center"><a href="{{ url('/') }}" class="h1"><b>Admin</b>LTE</a></div>
@@ -70,7 +70,7 @@
                 <p class="mt-3">Sudah punya akun? <a href="{{ url('/login') }}">Login disini</a></p>
             </div>
         </div>
-    </div> -->
+    </div>
     <!-- jQuery -->
     <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
