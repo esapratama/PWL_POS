@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Schema::table('m_user', function (Blueprint $table) {
-        //     $table->string('foto')->nullable();
-        // });
+        Schema::table('m_user', function (Blueprint $table) {
+            $table->string('foto')->nullable();
+        });
     }
 };

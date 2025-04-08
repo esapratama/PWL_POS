@@ -7,20 +7,20 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-    // public function index()
-    // {
-    //     $user = auth()->user();
-    //     $activeMenu = 'profile';
-    //     $breadcrumb = (object)[
-    //         'title' => 'Profile',
-    //         'list' => ['Home', 'Profile']
-    //     ];
-    //     return view('profile.index', [
-    //         'user' => $user,
-    //         'activeMenu' => $activeMenu,
-    //         'breadcrumb' => $breadcrumb
-    //     ]);
-    // }
+    public function index()
+    {
+        $user = auth()->user();
+        $activeMenu = 'profile';
+        $breadcrumb = (object)[
+            'title' => 'Profile',
+            'list' => ['Home', 'Profile']
+        ];
+        return view('profile.index', [
+            'user' => $user,
+            'activeMenu' => $activeMenu,
+            'breadcrumb' => $breadcrumb
+        ]);
+    }
 
     public function updateFoto(Request $request)
     {
