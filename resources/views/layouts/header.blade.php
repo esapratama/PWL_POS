@@ -135,14 +135,15 @@
                 <i class="fas fa-th-large"></i>
             </a>
         </li>
-        <li class="nav-item">
-            <form id="logout-form" action="{{ url('logout') }}" method="GET" style="display: none;">
-                @csrf
-            </form>
-            <a class="nav-link" href="#"
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();" role="button">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-        </li>
     </ul>
+    <!-- Profile -->
+    {{-- <a href="{{ route('profile.index') }}">
+        @if(auth()->user()->foto)
+        <img src="{{ asset('storage/foto/' . auth()->user()->foto) }}" class="img-circle" alt="User Image" width="35"
+            height="35" style="margin-top: 5px;">
+        @else
+        <img src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle" alt="Default User" width="35"
+            height="35" style="margin-top: 5px;">
+        @endif
+    </a> --}}
 </nav>
