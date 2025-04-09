@@ -55,7 +55,7 @@
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            tableBarang.ajax.reload();
+                            tableUser.ajax.reload();
                         } else {
                             $('.error-text').text('');
                             $.each(response.msgField, function (prefix, val) {

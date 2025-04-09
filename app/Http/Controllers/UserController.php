@@ -342,12 +342,13 @@ class UserController extends Controller
             if(count($data) > 1){ // jika data lebih dari 1 baris 
                 foreach ($data as $baris => $value) { 
                     if($baris > 1){ // baris ke 1 adalah header, maka lewati 
-                        $insert[] = [ 
-                            'level_id' => $value['A'], 
-                            'username' => $value['B'], 
-                            'nama' => $value['C'], 
-                            'created_at' => now(), 
-                        ]; 
+                        $insert[] = [
+                            'level_id' => $value['A'],
+                            'username' => $value['B'],
+                            'nama' => $value['C'],
+                            'password' => bcrypt('password123'), // Password default
+                            'created_at' => now(),
+                        ];
                     } 
                 } 
                 if(count($insert) > 0){ 

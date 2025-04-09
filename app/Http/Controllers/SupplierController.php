@@ -242,7 +242,7 @@
 
     public function export_excel()
     {
-        $supplier = SupplierModel::select('kode', 'nama', 'alamat', 'telp', 'email')->get();
+        $supplier = SupplierModel::select('supplier_kode', 'supplier_nama', 'supplier_alamat', 'supplier_telepon', 'supplier_email')->get();
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -259,11 +259,11 @@
         $baris = 2;
         foreach ($supplier as $value) {
             $sheet->setCellValue('A' . $baris, $no);
-            $sheet->setCellValue('B' . $baris, $value->kode);
-            $sheet->setCellValue('C' . $baris, $value->nama);
-            $sheet->setCellValue('D' . $baris, $value->alamat);
-            $sheet->setCellValue('E' . $baris, $value->telepon);
-            $sheet->setCellValue('F' . $baris, $value->email);
+            $sheet->setCellValue('B' . $baris, $value->supplier_kode);
+            $sheet->setCellValue('C' . $baris, $value->supplier_nama);
+            $sheet->setCellValue('D' . $baris, $value->supplier_alamat);
+            $sheet->setCellValue('E' . $baris, $value->supplier_telepon);
+            $sheet->setCellValue('F' . $baris, $value->supplier_email);
             $baris++;
             $no++;
         }
@@ -291,7 +291,7 @@
 
     public function export_pdf()
     {
-        $supplier = SupplierModel::select('kode', 'nama', 'alamat', 'telp', 'email')
+        $supplier = SupplierModel::select('supplier_kode', 'supplier_nama', 'supplier_alamat', 'supplier_telepon', 'supplier_email')
             ->orderBy('supplier_id')
             ->get();
 

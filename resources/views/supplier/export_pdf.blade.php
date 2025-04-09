@@ -108,11 +108,11 @@
                 @foreach($supplier as $no => $item)
                     <tr>
                         <td class="text-center">{{ $no + 1 }}</td>
-                        <td>{{ $item->kode }}</td>
-                        <td>{{ $item->nama }}</td>
-                        <td>{{ $item->alamat }}</td>
-                        <td>{{ $item->telepon }}</td>
-                        <td>{{ $item->email }}</td>
+                        <td>{{ $item->supplier_kode }}</td>
+                        <td>{{ $item->supplier_nama }}</td>
+                        <td>{{ $item->supplier_alamat }}</td>
+                        <td>{{ $item->supplier_telepon }}</td>
+                        <td>{{ $item->supplier_email }}</td>
                     </tr>
                 @endforeach
             </tbody>
