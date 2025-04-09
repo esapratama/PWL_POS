@@ -214,11 +214,11 @@
                 foreach ($data as $baris => $value) {
                     if ($baris > 1) {
                         $insert[] = [
-                            'kode' => $value['A'],
-                            'nama' => $value['B'],
-                            'alamat' => $value['C'],
-                            'telepon' => $value['D'],
-                            'email' => $value['E'],
+                            'supplier_kode' => $value['A'],
+                            'supplier_nama' => $value['B'],
+                            'supplier_alamat' => $value['C'],
+                            'supplier_telepon' => $value['D'],
+                            'supplier_email' => $value['E'],
                             'created_at' => now(),
                         ];
                     }
