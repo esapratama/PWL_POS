@@ -9,6 +9,9 @@ use App\Http\Controllers\Api\KategoriController;
 use App\Http\Controllers\Api\BarangController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\UploadController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::post('/register', App\Http\Controllers\Api\RegisterController::class)->name('register');
+Route::post('/register1', App\Http\Controllers\Api\RegisterController::class)->name('register1');
 Route::post('/login', App\Http\Controllers\Api\LoginController::class)->name('login');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -54,3 +58,19 @@ Route::delete('barangs/{barang}', [BarangController::class, 'destroy']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index']);
+    Route::post('/profile/foto', [ProfileController::class, 'updateFoto']);
+});
+
+Route::post('/upload/user', [UploadController::class, 'uploadUser']);
+Route::get('/upload/user', [UploadController::class, 'uploadUser']);
+
+Route::post('/upload/barang', [UploadController::class, 'uploadBarang']);
+Route::get('/upload/barang', [UploadController::class, 'uploadBarang']);
+
+Route::post('/upload/kategori', [UploadController::class, 'uploadKategori']);
+Route::get('/upload/kategori', [UploadController::class, 'uploadKategori']);
+
+Route::get('/upload/data', [UploadController::class, 'getAllData']);

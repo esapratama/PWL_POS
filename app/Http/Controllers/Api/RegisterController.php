@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-
 class RegisterController extends Controller
 {
     public function __invoke(Request $request) {
@@ -16,7 +15,8 @@ class RegisterController extends Controller
             'username' => 'required',
             'nama' => 'required',
             'password' => 'required|min:5|confirmed',
-            'level_id' => 'required'
+            'level_id' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         //if validations fails
@@ -24,12 +24,17 @@ class RegisterController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
+        // proses upload gambar
+        $image = $request->file('image');
+        $image->storeAs('public/foto', $image->hashName()); // simpan ke storage/app/public/foto
+
         //create user
         $user = UserModel::create([
             'username' => $request->username,
             'nama' => $request->nama,
             'password' => bcrypt($request->password),
             'level_id' => $request->level_id,
+            'image' => $image->hashName(), // simpan nama file-nya saja
         ]);
 
         //return response JSON user is created
