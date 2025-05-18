@@ -1,10 +1,12 @@
 <?php
  
  namespace App\Models;
- 
- use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
  use Illuminate\Database\Eloquent\Model;
  use Illuminate\Database\Eloquent\Relations\BelongsTo;
+ use Illuminate\Database\Eloquent\Casts\Attribute;
+
  
  class BarangModel extends Model
  {
@@ -24,5 +26,16 @@
  
      public function kategori():BelongsTo
      {
-         return $this->belongsTo(KategoriModel::class, 'kategori_id', 'kategori_id');}
+         return $this->belongsTo(KategoriModel::class, 'kategori_id', 'kategori_id');
+     }
+
+     public function image(): Attribute {
+        return Attribute::make (
+            get: fn($image) => url('/storage/post/' . $image),
+        );
+     }
+
+     public function transaksis() {
+        return $this->hasMany(TransaksiModel::class, 'barang_id');
+     }
 }

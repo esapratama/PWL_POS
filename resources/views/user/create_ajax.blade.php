@@ -1,11 +1,13 @@
 <form action="{{ url('/user/ajax') }}" method="POST" id="form-tambah">
     @csrf
+
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Tambah Data User</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -23,13 +25,11 @@
                     <input value="" type="text" name="username" id="username" class="form-control" required>
                     <small id="error-username" class="error-text form-text text-danger"></small>
                 </div>
-
                 <div class="form-group">
                     <label>Nama</label>
                     <input value="" type="text" name="nama" id="nama" class="form-control" required>
                     <small id="error-nama" class="error-text form-text text-danger"></small>
                 </div>
-
                 <div class="form-group">
                     <label>Password</label>
                     <input value="" type="password" name="password" id="password" class="form-control" required>
@@ -43,7 +43,6 @@
         </div>
     </div>
 </form>
-
 <script>
     $(document).ready(function () {
         $("#form-tambah").validate({
@@ -60,13 +59,13 @@
                     data: $(form).serialize(),
                     success: function (response) {
                         if (response.status) {
-                            $('#myModal').modal('hide');
+                            $('#tryModal').modal('hide');
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            dataUser.ajax.reload();
+                            dataTable.ajax.reload();
                         } else {
                             $('.error-text').text('');
                             $.each(response.msgField, function (prefix, val) {
@@ -87,7 +86,6 @@
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-
             highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },

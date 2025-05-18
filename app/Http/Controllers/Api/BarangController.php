@@ -5,37 +5,43 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\BarangModel;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
+
 
 class BarangController extends Controller
 {
-    public function index() 
-    {
-        return BarangModel::all();
-    }
+    public function index(): Collection
+{
+    return BarangModel::all();
+}
 
-    public function store(Request $request)
-    {
-        $barang = BarangModel::create($request->all());
-        return response()->json($barang, 201);
-    }
+public function store(Request $request): JsonResponse
+{
+    $request->validate([
+        'kategori_id' => 'required|exists:m_kategori,kategori_id',
+        'barang_kode' => 'required|unique:m_barang,barang_kode',
+        'barang_nama' => 'required',
+        'harga_beli' => 'required|numeric',
+        'harga_jual' => 'required|numeric',
+        'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
 
-    public function show(BarangModel $barang)
-    {
-        return BarangModel::find($barang);
-    }
+    $image = $request->file('image');
+    $image->store('barang', 'public');
 
-    public function update(Request $request, BarangModel $barang)
-    {
-        $barang->update($request->all());
-        return BarangModel::find($barang);
-    }
+    $barang = BarangModel::create([
+        'kategori_id' => $request->kategori_id,
+        'barang_kode' => $request->barang_kode,
+        'barang_nama' => $request->barang_nama,
+        'harga_beli' => $request->harga_beli,
+        'harga_jual' => $request->harga_jual,
+        'image' => $image->hashName(),
+    ]);
 
-    public function destroy(BarangModel $barang)
-    {
-        $barang->delete();
-        return response()->json([
-            'success' => true,
-            'message' => 'Data terhapus',
-        ]);
-    }
+    return response()->json([
+        'success' => true,
+        'barang' => $barang,
+    ]);
+}
 }

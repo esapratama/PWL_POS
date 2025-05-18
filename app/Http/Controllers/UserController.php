@@ -51,7 +51,7 @@ class UserController extends Controller
             ->addIndexColumn()
             ->addColumn('aksi', function ($user) { // Menambahkan kolom aksi
                 $btn = '<button onclick="modalAction(\''.url('/user/' . $user->user_id . 
-                        '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
+                        '/detail_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
                 $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->user_id .
                         '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->user_id .
@@ -107,28 +107,28 @@ class UserController extends Controller
     }
 
     // Menampilkan detail user
-    public function show(string $id)
-{
-    $user = UserModel::with('level')->find($id);
+    public function detail_ajax(string $id)
+    {
+        $breadcrumb = (object) [
+            'title' => 'Detail User',
+            'list' => ['Home', 'User', 'Detail']
+        ];
 
-    if (!$user) {
-        return redirect('/user')->with('error', 'User tidak ditemukan');
+        $page = (object) [
+            'title' => 'Detail User'
+        ];
+
+        $activeMenu = 'user';
+
+        $user = UserModel::find($id); 
+
+        return view('user.show', [
+            'breadcrumb' => $breadcrumb,
+            'page' => $page,
+            'activeMenu' => $activeMenu,
+            'user' => $user 
+        ]);
     }
-
-    $breadcrumb = (object) [
-        'title' => 'Detail User',
-        'list' => ['Home', 'User', 'Detail']
-    ];
-
-    $page = (object) [
-        'title' => 'Detail user'
-    ];
-
-    $activeMenu = 'user';
-
-    return view('user.show', compact('breadcrumb', 'page', 'user', 'activeMenu'));
-}
-
 
     // Menampilkan halaman form edit user
     public function edit(string $id)
@@ -342,13 +342,12 @@ class UserController extends Controller
             if(count($data) > 1){ // jika data lebih dari 1 baris 
                 foreach ($data as $baris => $value) { 
                     if($baris > 1){ // baris ke 1 adalah header, maka lewati 
-                        $insert[] = [
-                            'level_id' => $value['A'],
-                            'username' => $value['B'],
-                            'nama' => $value['C'],
-                            'password' => bcrypt('password123'), // Password default
-                            'created_at' => now(),
-                        ];
+                        $insert[] = [ 
+                            'level_id' => $value['A'], 
+                            'username' => $value['B'], 
+                            'nama' => $value['C'], 
+                            'created_at' => now(), 
+                        ]; 
                     } 
                 } 
                 if(count($insert) > 0){ 

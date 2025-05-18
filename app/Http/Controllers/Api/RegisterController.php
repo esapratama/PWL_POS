@@ -16,7 +16,7 @@ class RegisterController extends Controller
             'nama' => 'required',
             'password' => 'required|min:5|confirmed',
             'level_id' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         //if validations fails
@@ -25,8 +25,8 @@ class RegisterController extends Controller
         }
 
         // proses upload gambar
-        $image = $request->file('image');
-        $image->storeAs('public/foto', $image->hashName()); // simpan ke storage/app/public/foto
+         $image = $request->file('image');
+         $image->storeAs('public/foto', $image->hashName()); // simpan ke storage/app/public/foto
 
         //create user
         $user = UserModel::create([

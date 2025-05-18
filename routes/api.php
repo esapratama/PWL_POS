@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\UploadController;
+use App\Http\Controllers\Api\TransaksiController;
 
 
 /*
@@ -74,3 +75,6 @@ Route::post('/upload/kategori', [UploadController::class, 'uploadKategori']);
 Route::get('/upload/kategori', [UploadController::class, 'uploadKategori']);
 
 Route::get('/upload/data', [UploadController::class, 'getAllData']);
+
+Route::get('/transaksi', [TransaksiController::class, 'index']);
+Route::post('/transaksi', [TransaksiController::class, 'store']);
